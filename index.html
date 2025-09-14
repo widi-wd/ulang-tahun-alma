@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilih Hadiah Ulang Tahun</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Background pattern */
+        .grid-wrapper {
+            min-height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-color: #f8fafc;
+        }
+
+        .grid-background {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 0;
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+            background-size: 20px 30px;
+            -webkit-mask-image: radial-gradient(
+                ellipse 70% 60% at 50% 0%,
+                #000 60%,
+                transparent 100%
+            );
+            mask-image: radial-gradient(
+                ellipse 70% 60% at 50% 0%,
+                #000 60%,
+                transparent 100%
+            );
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+            padding: 0; /* Menghapus padding body */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 60px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .grid-wrapper {
+            background-color: #1a1a1a;
+        }
+
+        body.dark-mode .grid-background {
+            background-image: linear-gradient(to right, #333 1px, transparent 1px),
+                linear-gradient(to bottom, #333 1px, transparent 1px);
+        }
+
+        body.dark-mode .top-header {
+            background-color: #1e1e1e;
+            border-bottom: 2px solid #333;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .top-name {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .post-card {
+            background-color: #1e1e1e;
+            border: 4px solid #333;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .post-header {
+            border-bottom: 1px solid #333;
+        }
+
+        body.dark-mode .post-name,
+        body.dark-mode .comment-name {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .post-subtitle,
+        body.dark-mode .post-time {
+            color: #aaa;
+        }
+
+        body.dark-mode .post-image-container {
+            background-color: #2a2a2a;
+        }
+
+        body.dark-mode .post-image-placeholder {
+            background-color: #2a2a2a;
+            color: #666;
+        }
+
+        body.dark-mode .comment {
+            background-color: #2a2a2a;
+        }
+
+        body.dark-mode .comment-text {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .typing-indicator {
+            background-color: #2a2a2a;
+        }
+
+        body.dark-mode .audio-player {
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .heading {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .audio-item {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .audio-item:hover {
+            background-color: #2a2a2a;
+        }
+
+        body.dark-mode .audio-item.playing {
+            background-color: #1a3448;
+        }
+
+        body.dark-mode .audio-name {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .audio-artist {
+            color: #aaa;
+        }
+
+        body.dark-mode .gift-card {
+            --card-bg: #1e1e1e;
+            --card-text: #e0e0e0;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #333;
+        }
+
+        body.dark-mode .gifts-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .modal-content {
+            background: #1e1e1e;
+        }
+
+        body.dark-mode .modal-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-label {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-input {
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-input:focus {
+            border-color: #7257fa;
+        }
+
+        body.dark-mode .alert {
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .alert-desc {
+            color: #aaa;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin-top: 0; /* Memastikan tidak ada margin atas */
+            padding: 0 16px; /* Menambahkan padding horizontal */
+        }
+
+        /* Header atas - FULL LAYAR */
+        .top-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            margin: 0 -16px 16px -16px; /* Margin negatif untuk mengimbangi padding container */
+            border-bottom: 2px solid #e0e0e0;
+            width: 100vw; /* Lebar penuh viewport */
+            background-color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            left: 0;
+        }
+
+        .top-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 16px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #888;
+            border: 2px solid #e91e63;
+        }
+
+        .top-name {
+            font-weight: 700;
+            font-size: 18px;
+            color: #333;
+            flex: 1;
+        }
+
+        /* Dark mode switch */
+        .theme-switch {
+            margin-left: auto;
+        }
+
+        /* From Uiverse.io by Tsiangana */ 
+        /* The switch - the box around the slider */
+        .switch {
+            font-size: 17px;
+            position: relative;
+            display: inline-block;
+            width: 3.5em;
+            height: 2em;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding-top: 5px;
+            background-color: rgb(199, 219, 215);
+            transition: 0.4s;
+            border-radius: 30px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            border: 1px solid #fff;
+        }
+
+        .slider .fug .nav {
+            position: absolute;
+            height: 1.4em;
+            width: 1.5em;
+            left: 0.3em;
+            bottom: 0.3em;
+            transition: 0.4s;
+            z-index: 10;
+            transform: rotate(45deg);
+            fill: #fff;
+        }
+
+        .switch input:checked + .slider {
+            background-color: #2b4360;
+        }
+
+        .switch input:focus + .slider {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+        .switch input:checked + .slider .fug .nav {
+            transition: 0.4s;
+            transform: translateX(1.3em) rotate(45deg);
+            padding: 3px;
+            animation: 4s nav linear infinite;
+        }
+
+        @keyframes nav {
+            0% {
+                transform: translateX(1.3em) rotate(45deg);
+            }
+            10% {
+                transform: translateX(1.1em) rotate(45deg);
+            }
+            30% {
+                transform: translateX(1.2em) rotate(45deg);
+            }
+            50% {
+                transform: translateX(1em) rotate(45deg);
+            }
+            70% {
+                transform: translateX(1.2em) rotate(45deg);
+            }
+            80% {
+                transform: translateX(1em) rotate(45deg);
+            }
+            90% {
+                transform: translateX(1.2em) rotate(45deg);
+            }
+            100% {
+                transform: translateX(1.3em) rotate(45deg);
+            }
+        }
+
+        .star {
+            opacity: 0;
+            transition: 0.2s linear;
+        }
+
+        .switch input:checked + .slider .star {
+            opacity: 1;
+            transition: 0.2s linear;
+            animation: 2s piscar linear infinite;
+        }
+
+        .star:nth-last-child(1) {
+            position: absolute;
+            top: 7px;
+            left: 13px;
+        }
+        .star:nth-last-child(2) {
+            position: absolute;
+            top: 14px;
+            left: 19px;
+        }
+        .star:nth-last-child(3) {
+            position: absolute;
+            top: 18px;
+            left: 9px;
+        }
+        .star:nth-last-child(4) {
+            position: absolute;
+            top: 23px;
+            left: 24px;
+        }
+
+        @keyframes piscar {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Post card */
+        .post-card {
+            background-color: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 4px solid #333;
+            margin-bottom: 24px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .post-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 16px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #888;
+            border: 2px solid #e91e63;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-name {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            margin-bottom: 2px;
+            font-size: 18px;
+        }
+
+        .verified-icon {
+            color: #e91e63;
+            margin-left: 6px;
+            font-size: 16px;
+        }
+
+        .post-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-top: 2px;
+            margin-bottom: 4px;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .post-image-container {
+            position: relative;
+            background-color: #f0f0f0;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-image-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #aaa;
+            background-color: #f0f0f0;
+        }
+
+        /* Area komentar */
+        .comments-section {
+            background-color: #d81b60;
+            padding: 20px;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+        }
+
+        .comments-title-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 10px 16px;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .comments-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .comments-icon {
+            color: white;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comments-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 8px;
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar styling */
+        .comments-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .comments-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .comments-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .comments-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            height: 40px;
+            width: 4px;
+            background: linear-gradient(to bottom, 
+                rgba(255, 255, 255, 0.2), 
+                rgba(255, 255, 255, 0.6), 
+                rgba(255, 255, 255, 0.2));
+            border-radius: 2px;
+            transform: translateY(-50%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Input komentar */
+        .comment-input-container {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 8px 16px;
+            color: white;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .comment-input-real {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px 0;
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
+
+        .comment-input-real::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .send-button {
+            background: #ffffff;
+            border: none;
+            color: #d81b60;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        /* Kartu komentar */
+        .comment {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.5s ease-out;
+            position: relative;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            flex-shrink: 0;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #888;
+            border: 1px solid #ddd;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-name {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 0;
+            color: #333;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* Indikator pengetikan */
+        .typing-indicator {
+            background-color: white;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .typing-dots {
+            display: flex;
+            margin-left: 12px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            borderRadius: 50%;
+            background-color: #999;
+            margin-right: 4px;
+            animation: typingAnimation 1.4s infinite ease-in-out both;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 80%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Efek hover */
+        .post-avatar:hover, .top-avatar:hover {
+            transform: scale(1.03);
+            transition: transform 0.2s ease;
+        }
+
+        .post-name:hover {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+        }
+
+        .footer strong {
+            color: #e91e63;
+            font-weight: 700;
+        }
+
+        /* Bagian Hadiah */
+        .gifts-title {
+            text-align: center;
+            margin: 30px 0 20px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .gifts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        /* Kartu Hadiah */
+        .gift-card {
+            --card-bg: #ffffff;
+            --card-accent: #7257fa;
+            --card-text: #1e293b;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+
+            width: 100%;
+            max-width: 190px;
+            height: 254px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 0 auto;
+        }
+
+        .gift-card__shine {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                120deg,
+                rgba(255, 255, 255, 0) 40%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gift-card__glow {
+            position: absolute;
+            inset: -10px;
+            background: radial-gradient(
+                circle at 50% 0%,
+                rgba(114, 87, 250, 0.3) 0%,
+                rgba(114, 87, 250, 0) 70%
+            );
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .gift-card__content {
+            padding: 1.25em;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75em;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gift-card__badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #10b981;
+            color: white;
+            padding: 0.25em 0.5em;
+            border-radius: 999px;
+            font-size: 0.7em;
+            font-weight: 600;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.4s ease 0.1s;
+        }
+
+        .gift-card__image {
+            width: 100%;
+            height: 100px;
+            border-radius: 12px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .gift-card__image::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                    circle at 30% 30%,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    transparent 30%
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(139, 92, 246, 0.1) 0px,
+                    rgba(139, 92, 246, 0.1) 2px,
+                    transparent 2px,
+                    transparent 4px
+                );
+            opacity: 0.5;
+        }
+
+        .gift-card__text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25em;
+            min-height: 70px;
+        }
+
+        .gift-card__title {
+            color: var(--card-text);
+            font-size: 1.1em;
+            margin: 0;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .gift-card__description {
+            color: var(--card-text);
+            font-size: 0.75em;
+            margin: 0;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .gift-card__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .gift-card__button {
+            width: 28px;
+            height: 28px;
+            background: var(--card-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: scale(0.9);
+            border: none;
+        }
+
+        .gift-card__button.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Hover Effects */
+        .gift-card:hover {
+            transform: translateY(-10px);
+            box-shadow:
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(114, 87, 250, 0.2);
+        }
+
+        .gift-card:hover .gift-card__shine {
+            opacity: 1;
+            animation: shine 3s infinite;
+        }
+
+        .gift-card:hover .gift-card__glow {
+            opacity: 1;
+        }
+
+        .gift-card:hover .gift-card__badge {
+            transform: scale(1);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .gift-card:hover .gift-card__image {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .gift-card:hover .gift-card__title {
+            color: var(--card-accent);
+            transform: translateX(2px);
+        }
+
+        .gift-card:hover .gift-card__description {
+            opacity: 1;
+            transform: translateX(2px);
+        }
+
+        .gift-card:hover .gift-card__button:not(.disabled) {
+            transform: scale(1);
+            box-shadow: 0 0 0 4px rgba(114, 87, 250, 0.2);
+        }
+
+        .gift-card:hover .gift-card__button:not(.disabled) svg {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Active State */
+        .gift-card:active {
+            transform: translateY(-5px) scale(0.98);
+        }
+
+        /* Modal Form */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 30px;
+            width: 100%;
+            max-width: 100%;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7257fa;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 12px;
+            background: #7257fa;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-submit:hover {
+            background: #5a43d3;
+        }
+
+        /* Alert */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #232531;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .alert.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .alert-icon {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .alert-desc {
+            font-size: 14px;
+            color: #aaa;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .alert-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .alert.success .alert-icon {
+            color: #10b981;
+        }
+
+        .alert.error .alert-icon {
+            color: #ef4444;
+        }
+
+        /* Animations */
+        @keyframes shine {
+            0% {
+                background-position: -100% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Audio Player Styles */
+        .audio-section {
+            max-width: 100%;
+            margin: 30px auto;
+            padding: 0 16px;
+        }
+
+        .audio-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .audio-player {
+            background-color: #d81b60;
+            padding: 1em;
+            padding-bottom: 1.1em;
+            border-radius: 15px;
+            margin: 1em 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .currentplaying {
+            display: flex;
+            margin: 1em;
+            align-items: center;
+        }
+
+        .music-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 0.6em;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .heading {
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            align-self: center;
+        }
+
+        .audio-item {
+            display: flex;
+            flex-direction: row;
+            height: 4em;
+            padding-left: 1em;
+            padding-right: 1em;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+            transition: .4s ease-in-out;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .audio-item:hover {
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .audio-item.playing {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .audio-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            margin-right: 1em;
+        }
+
+        .audio-name {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .audio-artist {
+            font-size: 0.7em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Ganti dengan ikon Font Awesome */
+        .audio-play {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .audio-item.playing .audio-play .fa-play {
+            display: none;
+        }
+
+        .audio-item.playing .audio-play .fa-pause {
+            display: block;
+        }
+
+        .audio-play .fa-pause {
+            display: none;
+        }
+
+        /* Responsif */
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 60px;
+            }
+            
+            .post-image-container {
+                height: auto;
+            }
+
+            .gifts-container {
+                grid-template-columns: repeat(2, 1fr);
+                justify-items: center;
+            }
+
+            .modal-content {
+                border-radius: 20px;
+                max-width: 400px;
+                width: 90%;
+                align-items: center;
+                max-height: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .gifts-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                justify-content: center;
+            }
+            
+            .gift-card {
+                width: 100%;
+                max-width: 160px;
+                height: 240px;
+            }
+            
+            .gift-card__text {
+                min-height: 80px;
+            }
+            
+            .audio-player {
+                margin: 1em 0;
+            }
+            
+            .audio-item {
+                height: 3.5em;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .gifts-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .gift-card {
+                max-width: 140px;
+                height: 230px;
+            }
+            
+            .gift-card__content {
+                padding: 1em;
+            }
+            
+            .gift-card__image {
+                height: 90px;
+            }
+            
+            .gift-card__text {
+                min-height: 85px;
+            }
+            
+            .audio-name {
+                font-size: 0.8em;
+            }
+            
+            .audio-artist {
+                font-size: 0.65em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background pattern -->
+    <div class="grid-wrapper">
+        <div class="grid-background"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header atas dengan avatar dan nama -->
+        <div class="top-header">
+            <div class="top-avatar" id="top-avatar">
+                foto
+            </div>
+            <div class="top-name">Almalia Winesh</div>
+            <div class="theme-switch">
+                <!-- From Uiverse.io by Tsiangana --> 
+                <label class="switch">
+                  <input type="checkbox" id="theme-toggle" />
+                  <span class="slider">
+                    <div class="fug">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        fill="currentColor"
+                        class="nav bi bi-rocket-takeoff-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M12.17 9.53c2.307-2.592 3.278-4.684 3.641-6.218.21-.887.214-1.58.160-2.065a3.578 3.578 0 0 0-.108-.563 2.22 2.22 0 0 0-.078-.23V.453c-.073-.164-.168-.234-.352-.295a2.35 2.35 0 0 0-.16-.045 3.797 3.797 0 0 0-.57-.093c-.49-.044-1.19-.03-2.08.188-1.536.374-3.618 1.343-6.161 3.604l-2.4.238h-.006a2.552 2.552 0 0 0-1.524.734L.15 7.17a.512.512 0 0 0 .433.868l1.896-.271c.28-.04.592.013.955.132.232.076.437.160.655.248l.203.083c.196.816.66 1.58 1.275 2.195.613.614 1.376 1.08 2.191 1.277l.082.202c.089.218.173.424.249.657.118.363.172.676.132.956l-.271 1.9a.512.512 0 0 0 .867.433l2.382-2.386c.410-.410.668-.949.732-1.526l.240-2.408Zm.11-3.699c-.797.8-1.93.961-2.528.362-.598-.6-.436-1.733.361-2.532.798-.799 1.93-.96 2.528-.361.599.599.437 1.732-.36 2.531Z"
+                        ></path>
+                        <path
+                          d="M5.205 10.787a7.632 7.632 0 0 0 1.804 1.352c-1.118 1.007-4.929 2.028-5.054 1.903-.126-.127.737-4.189 1.839-5.18.346.69.837 1.35 1.411 1.925Z"
+                        ></path>
+                      </svg>
+                    </div>
+
+                    <div class="stars">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="4"
+                        height="4"
+                        fill="#fff"
+                        class="star bi bi-star-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.950l-3.522 3.356.830 4.73c.078.443-.36.790-.746.592L8 13.187l-4.389 2.256z"
+                        ></path>
+                      </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="4"
+                        height="4"
+                        fill="#fff"
+                        class="star bi bi-star-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.950l-3.522 3.356.830 4.73c.078.443-.36.790-.746.592L8 13.187l-4.389 2.256z"
+                        ></path>
+                      </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="4"
+                        height="4"
+                        fill="#fff"
+                        class="star bi bi-star-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.950l-3.522 3.356.830 4.73c.078.443-.36.790-.746.592L8 13.187l-4.389 2.256z"
+                        ></path>
+                      </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="4"
+                        height="4"
+                        fill="#fff"
+                        class="star bi bi-star-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.950l-3.522 3.356.830 4.73c.078.443-.36.790-.746.592L8 13.187l-4.389 2.256z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Kartu postingan utama -->
+        <div class="post-card">
+            <!-- Header postingan dengan avatar dan info user -->
+            <div class="post-header">
+                <div class="post-avatar" id="post-avatar">
+                    foto
+                </div>
+                <div class="post-user-info">
+                    <div class="post-name">
+                        Widi Wardana
+                        <i class="fas fa-check-circle verified-icon"></i>
+                    </div>
+                    <div class="post-subtitle">sedang merayakan ulang tahun seseorang</div>
+                    <div class="post-time">Selasa, 15 September 2025, 00:00:00</div>
+                </div>
+            </div>
+
+            <!-- Gambar postingan -->
+            <div class="post-image-container">
+                <div class="post-image-placeholder" id="post-image-placeholder">foto</div>
+            </div>
+
+            <!-- Area komentar -->
+            <div class="comments-section">
+                <div class="comments-title-container">
+                    <div class="comments-title">Komentar</div>
+                    <div class="comments-icon">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                </div>
+                <div class="scroll-indicator"></div>
+                
+                <!-- Container untuk daftar komentar -->
+                <div class="comments-container" id="comments-container">
+                    <!-- Komentar akan ditambahkan di sini secara dinamis -->
+                </div>
+                
+                <!-- Input komentar asli -->
+                <div class="comment-input-container">
+                    <input type="text" class="comment-input-real" placeholder="Ketik komentar..." id="comment-input">
+                    <button class="send-button" id="send-comment">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian Audio Player -->
+        <div class="audio-section">
+            <h2 class="audio-title">PLAYLIST </h2>
+            
+            <div class="audio-player">
+                <div class="currentplaying">
+                    <div class="music-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <p class="heading">playlist</p></p>
+                </div>
+                <div class="audio-item" data-audio="Owl-City-Fireflies-Lyrics_QBgl4rVz3Ks.mp3">
+                    <div class="audio-info">
+                        <p class="audio-name">Owl City</p>
+                        <p class="audio-artist">Fireflies</p>
+                    </div>
+                    <div class="audio-controls">
+                        <div class="audio-play">
+                            <i class="fas fa-play"></i>
+                            <i class="fas fa-pause"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="audio-item" data-audio="noah-mimpi-yang-sempurna.mp3">
+                    <div class="audio-info">
+                        <p class="audio-name">Mimpi Yang Sempurna</p>
+                        <p class="audio-artist">Noah</p>
+                    </div>
+                    <div class="audio-controls">
+                        <div class="audio-play">
+                            <i class="fas fa-play"></i>
+                            <i class="fas fa-pause"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="audio-item" data-audio="ucapan3.mp3">
+                    <div class="audio-info">
+                        <p class="audio-name">Ucapan dari Ahmad</p>
+                        <p class="audio-artist">Ahmad Rizky</p>
+                    </div>
+                    <div class="audio-controls">
+                        <div class="audio-play">
+                            <i class="fas fa-play"></i>
+                            <i class="fas fa-pause"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian Pilihan Hadiah -->
+        <h2 class="gifts-title">Pilih Hadiah Ulang Tahun</h2>
+        <div class="gifts-container">
+            <!-- Hadiah 1 - Mie Gacoan (Bisa di-claim) -->
+            <div class="gift-card">
+                <!-- Kilauan dihapus untuk mode gelap -->
+                <div class="gift-card__content">
+                    <div class="gift-card__badge">TERSEDIA</div>
+                    <div class="gift-card__image" style="background: linear-gradient(45deg, #ff9a9e, #fad0c4);">
+                        <i class="fas fa-utensils" style="color: white;"></i>
+                    </div>
+                    <div class="gift-card__text">
+                        <p class="gift-card__title">Mie Gacoan</p>
+                        <p class="gift-card__description">Voucher makan gratis di Mie Gacoan</p>
+                    </div>
+                    <div class="gift-card__footer">
+                        <button class="gift-card__button" data-gift="Mie Gacoan">
+                            <svg height="16" width="16" viewBox="0 0 24 24">
+                                <path
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    d="M4 12H20M12 4V20"
+                                    fill="currentColor"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hadiah 2 - Tidak bisa di-claim -->
+            <div class="gift-card">
+                <div class="gift-card__content">
+                    <div class="gift-card__image" style="background: linear-gradient(45deg, #a1c4fd, #c2e9fb);">
+                        <i class="fas fa-heart" style="color: white;"></i>
+                    </div>
+                    <div class="gift-card__text">
+                        <p class="gift-card__title"> Romantis</p>
+                        <p class="gift-card__description">Hadiah khusus untuk pasangan</p>
+                    </div>
+                    <div class="gift-card__footer">
+                        <button class="gift-card__button disabled">
+                            <svg height="16" width="16" viewBox="0 0 24 24">
+                                <path
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    d="M4 12H20M12 4V20"
+                                    fill="currentColor"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hadiah 3 - Tidak bisa di-claim -->
+            <div class="gift-card">
+                <div class="gift-card__content">
+                    <div class="gift-card__image" style="background: linear-gradient(45deg, #ffecd2, #fcb69f);">
+                        <i class="fas fa-star" style="color: white;"></i>
+                    </div>
+                    <div class="gift-card__text">
+                        <p class="gift-card__title"> Eksklusif</p>
+                        <p class="gift-card__description">Hadiah terbatas edisi spesial</p>
+                    </div>
+                    <div class="gift-card__footer">
+                        <button class="gift-card__button disabled">
+                            <svg height="16" width="16" viewBox="0 0 24 24">
+                                <path
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    d="M4 12H20M12 4V20"
+                                    fill="currentColor"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hadiah 4 - Tidak bisa di-claim -->
+            <div class="gift-card">
+                <div class="gift-card__content">
+                    <div class="gift-card__image" style="background: linear-gradient(45deg, #84fab0, #8fd3f4);">
+                        <i class="fas fa-music" style="color: white;"></i>
+                    </div>
+                    <div class="gift-card__text">
+                        <p class="gift-card__title">Paket Spesial</p>
+                        <p class="gift-card__description">Kejutan spesial untuk hari istimewa</p>
+                    </div>
+                    <div class="gift-card__footer">
+                        <button class="gift-card__button disabled">
+                            <svg height="16" width="16" viewBox="0 0 24 24">
+                                <path
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    d="M4 12H20M12 4V20"
+                                    fill="currentColor"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Form -->
+    <div class="modal-overlay" id="gift-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="modal-title">Kirim Hadiah - Mie Gacoan</h2>
+            <form id="gift-form">
+                <input type="hidden" id="selected-gift" name="gift" value="Mie Gacoan">
+                <div class="form-group">
+                    <label class="form-label" for="name">Nama Lengkap</label>
+                    <input type="text" class="form-input" id="name" name="name" required placeholder="Masukkan nama lengkap">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="address">Alamat Lengkap</label>
+                    <textarea class="form-input" id="address" name="address" rows="3" required placeholder="Masukkan alamat lengkap untuk pengiriman"></textarea>
+                </div>
+                <button type="submit" class="form-submit">Konfirmasi Pengiriman</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alert Success -->
+    <div class="alert success" id="success-alert">
+        <div class="alert-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="alert-content">
+            <p class="alert-title">Berhasil!</p>
+            <p class="alert-desc">Oke Alma pesanan ini akan dicatat.</p>
+        </div>
+        <button class="alert-close" id="alert-close-success">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Alert Error -->
+    <div class="alert error" id="error-alert">
+        <div class="alert-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="alert-content">
+            <p class="alert-title">Gagal!</p>
+            <p class="alert-desc">Harap isi semua field yang diperlukan.</p>
+        </div>
+        <button class="alert-close" id="alert-close-error">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="footer">
+        Powered by <strong>Widi Wardana</strong>
+    </div>
+
+    <script>
+        // Konfigurasi Telegram
+        const TELEGRAM_BOT_TOKEN = "8390196162:AAF0iE8CF8GD7_KsfBdpvRzGQ40wyhZkWgY";
+        const TELEGRAM_CHAT_ID = "7651717623";
+
+        // DATA KOMENTAR - menggunakan nama-nama orang Indonesia
+        const commentsData = [ 
+            { "id": 1, "name": "Budi Santoso", "avatar": "komentar1.jpg", "text": "Selamat ulang tahun Alma! Semoga panjang umur, makin sukses, sehat selalu, dan jangan lupa tetap rendah hati ya bro!", "verified": true }, 
+            { "id": 2, "name": "Sari Indah", "avatar": "komentar2.jpg", "text": "Selamat ulang tahun Alma! Semoga harimu penuh dengan kebahagiaan, cinta, dan rejeki yang melimpah. Have fun today!", "verified": false }, 
+            { "id": 3, "name": "Ahmad Rizky", "avatar": "komentar3.jpg", "text": "Happy birthday Alma! Semoga semua doa terbaik terkabul, makin kece, makin lancar rezekinya, dan tetap semangat dalam setiap langkah hidupmu.", "verified": true }, 
+            { "id": 4, "name": "Dewi Lestari", "avatar": "komentar2.jpg", "text": "HBD Alma! Semoga panjang umur, sehat selalu, makin cantik, makin sukses, dan selalu dikelilingi orang-orang baik.", "verified": false }, 
+            { "id": 5, "name": "Rudi Hartono", "avatar": "komentar1.jpg", "text": "Wish you all the best Alma! Semoga semua yang kamu impikan bisa tercapai, tetap semangat mengejar cita-cita, dan jangan pernah menyerah.", "verified": true }, 
+            { "id": 6, "name": "Maya Sari", "avatar": "komentar2.jpg", "text": "Selamat ulang tahun Alma! Semoga kamu selalu bahagia, sehat, sukses dalam karir dan percintaan. Pokoknya yang terbaik buat kamu!", "verified": false }, 
+            { "id": 7, "name": "Joko Widodo", "avatar": "komentar1.jpg", "text": "Met ultah Alma! Semoga makin berkah, makin sukses, makin bahagia, dan selalu diberi kesehatan untuk mewujudkan semua cita-cita besarmu.", "verified": true }, 
+            { "id": 8, "name": "Lina Marlina", "avatar": "komentar3.jpg", "text": "HBD Alma! Semoga makin kece, makin happy, makin sukses di setiap langkahmu. Jangan lupa traktirannya dong hehe 😁", "verified": false }, 
+            { "id": 9, "name": "Agus Prayogo", "avatar": "komentar1.jpg", "text": "Selamat ulang tahun Alma! Semoga panjang umur, sehat selalu, sukses di karir, dan makin banyak rezeki yang halal dan berkah.", "verified": true }, 
+            { "id": 10, "name": "Rina Wijaya", "avatar": "komentar2.jpg", "text": "Happy birthday Alma! Semoga tahun ini lebih indah dari tahun sebelumnya, makin dewasa, makin bijak, dan semua impianmu tercapai.", "verified": false }, 
+            { "id": 11, "name": "Andi Pratama", "avatar": "komentar1.jpg", "text": "Bro Alma, happy bday! Semoga makin sukses, makin bahagia, dan jangan lupa tetep humble. Gas terus kejar mimpi!", "verified": true }, 
+            { "id": 12, "name": "Citra Anggraini", "avatar": "komentar2.jpg", "text": "Selamat ulang tahun Alma! Semoga hidupmu penuh warna, penuh cinta, dan selalu dikelilingi orang-orang baik yang tulus mendukungmu.", "verified": false }, 
+            { "id": 13, "name": "Rangga Saputra", "avatar": "komentar3.jpg", "text": "HBD Alma! Semoga sehat selalu, karir makin lancar, rezeki makin deras, dan semoga semua yang kamu inginkan bisa terwujud. Amin!", "verified": true }, 
+            { "id": 14, "name": "Melati Puspita", "avatar": "komentar2.jpg", "text": "Happy birthday Alma! Semoga makin cantik, makin sukses, makin bahagia, dan setiap langkahmu selalu dalam lindungan Tuhan.", "verified": false }, 
+            { "id": 15, "name": "Doni Kurniawan", "avatar": "komentar1.jpg", "text": "Met ultah Alma! Semoga panjang umur, sehat, banyak rezeki, makin ganteng kalo cowok, makin kece kalo cewek, dan makin sukses pokoknya.", "verified": true }, 
+            { "id": 16, "name": "Fitri Handayani", "avatar": "komentar2.jpg", "text": "Selamat ulang tahun Alma! Semoga kamu makin bijak, makin dewasa, makin sukses, dan bahagia selalu bersama orang-orang yang kamu cintai.", "verified": false }, 
+            { "id": 17, "name": "Bayu Prakoso", "avatar": "komentar1.jpg", "text": "HBD Alma! Semoga rezekimu makin banyak, makin sukses karirmu, makin lancar usahamu, dan selalu bahagia bersama keluarga.", "verified": true }, 
+            { "id": 18, "name": "Sinta Dewi", "avatar": "komentar3.jpg", "text": "Happy birthday Alma! Jangan lupa tetap jadi diri sendiri, semoga makin sukses, makin happy, makin banyak pengalaman indah ke depannya.", "verified": false }, 
+            { "id": 19, "name": "Tono Saputra", "avatar": "komentar1.jpg", "text": "Selamat ulang tahun Alma! Panjang umur, sehat selalu, banyak rejeki, makin ganteng/kece, dan sukses dalam segala hal. Cheers bro!", "verified": true }, 
+            { "id": 20, "name": "Putri Ayu", "avatar": "komentar2.jpg", "text": "Met ultah Alma! Semoga semua impianmu terkabul, makin bahagia, makin cantik, makin sukses, dan makin kece selalu.", "verified": false }, 
+            { "id": 21, "name": "Fajar Nugroho", "avatar": "komentar1.jpg", "text": "Happy birthday Alma! Semoga sehat selalu, makin sukses, makin bahagia, dan tetap rendah hati dalam segala hal.", "verified": true }, 
+            { "id": 22, "name": "Diana Kusuma", "avatar": "komentar2.jpg", "text": "Selamat ulang tahun Alma! Semoga selalu ceria, makin cantik, makin bahagia, dan semoga rejekimu semakin lancar.", "verified": false }, 
+            { "id": 23, "name": "Fauzan Ramadhan", "avatar": "komentar1.jpg", "text": "HBD Alma! Semoga makin kece, makin ganteng kalo cowok, makin cantik kalo cewek, pokoknya selalu bahagia.", "verified": true }, 
+            { "id": 24, "name": "Nia Maharani", "avatar": "komentar3.jpg", "text": "Happy bday Alma! Semoga sehat selalu, bahagia terus, makin sukses, makin banyak pencapaian besar di hidupmu.", "verified": false }, 
+            { "id": 25, "name": "Yoga Aditya", "avatar": "komentar1.jpg", "text": "Selamat ulang tahun Alma! Semoga panjang umur, sehat, sukses, bahagia, dan makin lancar semua urusanmu.", "verified": true }, 
+            { "id": 26, "name": "Ayu Wulandari", "avatar": "komentar2.jpg", "text": "HBD Alma! Semoga panjang umur, makin cantik, makin sukses, makin bahagia, dan selalu dilindungi Tuhan.", "verified": false }, 
+            { "id": 27, "name": "Ilham Setiawan", "avatar": "komentar1.jpg", "text": "Happy birthday Alma! Semoga rezeki makin banyak, makin sukses, makin happy, dan tetap semangat meraih impian.", "verified": true }, 
+            { "id": 28, "name": "Ratna Sari", "avatar": "komentar2.jpg", "text": "Met ultah Alma! Semoga semua doamu terkabul, makin cantik, makin sukses, dan makin bahagia selalu.", "verified": false }, 
+            { "id": 29, "name": "Galih Permana", "avatar": "komentar3.jpg", "text": "Happy bday Alma! Semoga panjang umur, sehat, sukses, bahagia, makin kece, makin keren, dan makin hebat.", "verified": true }, 
+            { "id": 30, "name": "Nurul Hidayah", "avatar": "komentar2.jpg", "text": "Selamat ulang tahun Alma! Semoga panjang umur, sehat, sukses, makin cantik, makin bahagia, dan makin diberkahi.", "verified": false },
+            { "id": 31, "name": "Riko Saputra", "avatar": "komentar1.jpg", "text": "HBD Alma! Semoga makin sukses, makin keren, makin ganteng/cantik, dan makin bahagia terus tiap hari.", "verified": true }, 
+            { "id": 32, "name": "Kartika Dewi", "avatar": "komentar2.jpg", "text": "Happy birthday Alma! Semoga makin cantik, makin sukses, makin bahagia, dan makin dekat dengan semua cita-citamu.", "verified": false }, 
+            { "id": 33, "name": "Rizky Firmansyah", "avatar": "komentar1.jpg", "text": "Selamat ulang tahun Alma! Semoga panjang umur, sehat selalu, makin sukses, makin bahagia, dan selalu diberkahi.", "verified": true }, 
+            { "id": 34, "name": "Winda Kartika", "avatar": "komentar2.jpg", "text": "HBD Alma! Semoga makin cantik, makin sukses, makin bahagia, makin keren, dan selalu diberi kesehatan.", "verified": false }, 
+            { "id": 35, "name": "Alif Ramadhan", "avatar": "komentar3.jpg", "text": "Met ultah Alma! Semoga makin ganteng/cantik, makin sukses, makin bahagia, makin banyak rezeki, dan makin berkah.", "verified": true }, 
+            { "id": 36, "name": "Intan Permata", "avatar": "komentar2.jpg", "text": "Happy birthday Alma! Semoga panjang umur, sehat, makin cantik, makin bahagia, makin sukses, dan makin diberkahi.", "verified": false }, 
+            { "id": 37, "name": "Eko Susanto", "avatar": "komentar1.jpg", "text": "HBD Alma! Semoga makin sukses, makin ganteng, makin keren, makin bahagia, dan makin banyak rezeki.", "verified": true }, 
+            { "id": 38, "name": "Sari Putri", "avatar": "komentar2.jpg", "text": "Selamat ulang tahun Alma! Semoga makin cantik, makin bahagia, makin sukses, makin sehat, dan makin berkah.", "verified": false }, 
+            { "id": 39, "name": "Dedi Irawan", "avatar": "komentar1.jpg", "text": "Happy birthday Alma! Semoga makin ganteng, makin sukses, makin keren, makin bahagia, dan makin berkah.", "verified": true }, 
+            { "id": 40, "name": "Clara Salsabila", "avatar": "komentar3.jpg", "text": "HBD Alma! Semoga makin cantik, makin keren, makin sukses, makin bahagia, makin sehat, dan makin diberkahi.", "verified": false },
+            { "id": 41, "name": "Hendra Saputra", "avatar": "komentar1.jpg", "text": "Met ultah Alma! Semoga makin ganteng, makin keren, makin sukses, makin bahagia, dan makin sehat selalu.", "verified": true }, 
+            { "id": 42, "name": "Aulia Fitri", "avatar": "komentar2.jpg", "text": "Happy birthday Alma! Semoga makin cantik, makin sukses, makin bahagia, makin keren, makin sehat, dan makin berkah.", "verified": false }, 
+            { "id": 43, "name": "Farhan Pratama", "avatar": "komentar1.jpg", "text": "Selamat ulang tahun Alma! Semoga makin sukses, makin keren, makin ganteng, makin bahagia, dan makin sehat selalu.", "verified": true }, 
+            { "id": 44, "name": "Dewi Anggraini", "avatar": "komentar2.jpg", "text": "HBD Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin diberkahi, dan makin ceria.", "verified": false }, 
+            { "id": 45, "name": "Imam Setiawan", "avatar": "komentar3.jpg", "text": "Happy birthday Alma! Semoga makin sukses, makin keren, makin ganteng, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 46, "name": "Yuniarti Sari", "avatar": "komentar2.jpg", "text": "Met ultah Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false }, 
+            { "id": 47, "name": "Rafi Hidayat", "avatar": "komentar1.jpg", "text": "Selamat ulang tahun Alma! Semoga makin ganteng, makin keren, makin sukses, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 48, "name": "Dina Kartika", "avatar": "komentar2.jpg", "text": "Happy birthday Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false }, 
+            { "id": 49, "name": "Rendy Maulana", "avatar": "komentar1.jpg", "text": "HBD Alma! Semoga makin sukses, makin keren, makin ganteng, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 50, "name": "Nadia Putri", "avatar": "komentar2.jpg", "text": "Met ultah Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false },
+            { "id": 51, "name": "Arif Kurniawan", "avatar": "komentar1.jpg", "text": "Happy birthday Alma! Semoga makin sukses, makin keren, makin ganteng, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 52, "name": "Salsa Amelia", "avatar": "komentar2.jpg", "text": "HBD Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false }, 
+            { "id": 53, "name": "Bagus Pratama", "avatar": "komentar1.jpg", "text": "Met ultah Alma! Semoga makin ganteng, makin keren, makin sukses, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 54, "name": "Tania Wulandari", "avatar": "komentar2.jpg", "text": "Happy birthday Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false }, 
+            { "id": 55, "name": "Dimas Ramadhan", "avatar": "komentar3.jpg", "text": "Selamat ulang tahun Alma! Semoga makin ganteng, makin keren, makin sukses, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 56, "name": "Lestari Ayu", "avatar": "komentar2.jpg", "text": "Met ultah Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false }, 
+            { "id": 57, "name": "Yusuf Maulana", "avatar": "komentar1.jpg", "text": "Happy birthday Alma! Semoga makin sukses, makin keren, makin ganteng, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 58, "name": "Indah Permata", "avatar": "komentar2.jpg", "text": "HBD Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false }, 
+            { "id": 59, "name": "Fikri Saputra", "avatar": "komentar1.jpg", "text": "Met ultah Alma! Semoga makin ganteng, makin keren, makin sukses, makin bahagia, makin sehat, dan makin berkah.", "verified": true }, 
+            { "id": 60, "name": "Aisyah Putri", "avatar": "komentar3.jpg", "text": "Happy birthday Alma! Semoga makin cantik, makin sukses, makin bahagia, makin sehat, makin berkah, dan makin ceria.", "verified": false }
+        ];
+
+        // KONFIGURASI - dapat disesuaikan
+        const MIN_INTERVAL = 2000;    // Interval minimal antara komentar (ms)
+        const MAX_INTERVAL = 4000;    // Interval maksimal antara komentar (ms)
+
+        // Variabel global
+        let availableComments = [];
+        let commentQueue = [];
+        let isTyping = false;
+        let selectedGift = '';
+        let currentAudio = null;
+        let currentPlayingElement = null;
+
+        // Fungsi untuk mengirim pesan ke Telegram
+        async function sendToTelegram(message) {
+            try {
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Response from Telegram:', data);
+                
+                if (data.ok) {
+                    return true;
+                } else {
+                    console.error('Error from Telegram API:', data);
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+                return false;
+            }
+        }
+
+        // Fungsi untuk mengacak array (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Fungsi untuk memuat gambar atau menampilkan placeholder
+        function loadImage(elementId, imagePath, altText) {
+            const img = new Image();
+            img.onload = function() {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.innerHTML = '';
+                    element.style.backgroundImage = `url('${imagePath}')`;
+                    element.style.backgroundSize = 'cover';
+                    element.style.backgroundPosition = 'center';
+                }
+            };
+            img.onerror = function() {
+                // Tetap tampilkan placeholder jika gambar gagal dimuat
+                console.warn(`Gambar ${imagePath} tidak dapat dimuat, menggunakan placeholder`);
+            };
+            img.src = imagePath;
+        }
+
+        // Fungsi untuk menampilkan indikator pengetikan
+        function showTypingIndicator(avatar) {
+            isTyping = true;
+            const commentsContainer = document.getElementById('comments-container');
+            
+            const typingElement = document.createElement('div');
+            typingElement.className = 'typing-indicator';
+            typingElement.setAttribute('role', 'status');
+            typingElement.setAttribute('aria-live', 'polite');
+            
+            typingElement.innerHTML = `
+                <div class="comment-avatar">${avatar}</div>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            
+            commentsContainer.appendChild(typingElement);
+            commentsContainer.scrollTop = commentsContainer.scrollHeight;
+            
+            return typingElement;
+        }
+
+        // Fungsi untuk menampilkan komentar
+        function showComment(comment, typingElement) {
+            const commentsContainer = document.getElementById('comments-container');
+            
+            // Hapus indikator pengetikan
+            if (typingElement && typingElement.parentNode) {
+                typingElement.parentNode.removeChild(typingElement);
+            }
+            
+            // Buat elemen komentar
+            const commentElement = document.createElement('div');
+            commentElement.className = 'comment';
+            
+            const verifiedIcon = comment.verified ? '<i class="fas fa-check-circle verified-icon" style="color: #e91e63; margin-left: 6px; font-size: 12px;"></i>' : '';
+            
+            commentElement.innerHTML = `
+                <div class="comment-header">
+                    <div class="comment-avatar" id="comment-avatar-${comment.id}">foto</div>
+                    <div class="comment-name">${comment.name}${verifiedIcon}</div>
+                </div>
+                <div class="comment-text">${comment.text}</div>
+            `;
+            
+            commentsContainer.appendChild(commentElement);
+            
+            // Coba muat gambar avatar untuk komentar
+            loadImage(`comment-avatar-${comment.id}`, comment.avatar, comment.name);
+            
+            // Scroll ke bawah untuk menampilkan komentar terbaru
+            commentsContainer.scrollTop = commentsContainer.scrollHeight;
+            
+            isTyping = false;
+        }
+
+        // Fungsi untuk memproses antrian komentar
+        function processCommentQueue() {
+            if (isTyping || commentQueue.length === 0) return;
+            
+            const comment = commentQueue.shift();
+            const avatarPlaceholder = `<div class="comment-avatar">foto</div>`;
+            const typingElement = showTypingIndicator(avatarPlaceholder);
+            
+            // Durasi mengetik acak antara 1-8 detik
+            const typingDuration = Math.floor(Math.random() * 7000) + 1000;
+            
+            // Set timeout untuk menampilkan komentar setelah animasi pengetikan
+            setTimeout(() => {
+                showComment(comment, typingElement);
+                
+                // Jika antrian kosong, isi ulang dengan komentar yang tersedia
+                if (commentQueue.length === 0 && availableComments.length === 0) {
+                    availableComments = shuffleArray([...commentsData]);
+                }
+                
+                // Jadwalkan komentar berikutnya
+                scheduleNextComment();
+            }, typingDuration);
+        }
+
+        // Fungsi untuk menjadwalkan komentar berikutnya
+        function scheduleNextComment() {
+            if (availableComments.length === 0) {
+                availableComments = shuffleArray([...commentsData]);
+            }
+            
+            // Tambahkan komentar berikutnya ke antrian
+            commentQueue.push(availableComments.pop());
+            
+            // Tentukan interval acak untuk komentar berikutnya
+            const interval = Math.floor(Math.random() * (MAX_INTERVAL - MIN_INTERVAL + 1)) + MIN_INTERVAL;
+            
+            setTimeout(() => {
+                processCommentQueue();
+            }, interval);
+        }
+
+        // Fungsi untuk menambahkan komentar dari user
+        function addUserComment() {
+            const commentInput = document.getElementById('comment-input');
+            const commentText = commentInput.value.trim();
+            
+            if (commentText === '') return;
+            
+            const userComment = {
+                id: 'user-' + Date.now(),
+                name: 'Anda',
+                avatar: '',
+                text: commentText,
+                verified: false
+            };
+            
+            const commentsContainer = document.getElementById('comments-container');
+            
+            // Buat elemen komentar user
+            const commentElement = document.createElement('div');
+            commentElement.className = 'comment';
+            
+            commentElement.innerHTML = `
+                <div class="comment-header">
+                    <div class="comment-avatar">foto</div>
+                    <div class="comment-name">${userComment.name}</div>
+                </div>
+                <div class="comment-text">${userComment.text}</div>
+            `;
+            
+            commentsContainer.appendChild(commentElement);
+            commentsContainer.scrollTop = commentsContainer.scrollHeight;
+            
+            // Kosongkan input
+            commentInput.value = '';
+            
+            // Kirim komentar ke Telegram
+            const telegramMessage = `💬 <b>Komentar Baru</b>\n\nDari: ${userComment.name}\nPesan: ${userComment.text}`;
+            sendToTelegram(telegramMessage);
+        }
+
+        // Fungsi untuk menampilkan modal hadiah
+        function showGiftModal(giftName) {
+            selectedGift = giftName;
+            document.getElementById('selected-gift').value = giftName;
+            document.getElementById('gift-modal').classList.add('active');
+        }
+
+        // Fungsi untuk menyembunyikan modal
+        function hideGiftModal() {
+            document.getElementById('gift-modal').classList.remove('active');
+        }
+
+        // Fungsi untuk menampilkan alert
+        function showAlert(type, customMessage = null) {
+            const alert = document.getElementById(`${type}-alert`);
+            
+            // Jika ada pesan kustom, perbarui teks alert
+            if (customMessage && type === 'success') {
+                const alertDesc = alert.querySelector('.alert-desc');
+                if (alertDesc) {
+                    alertDesc.textContent = customMessage;
+                }
+            }
+            
+            alert.classList.add('show');
+            
+            // Sembunyikan alert setelah 5 detik
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 5000);
+        }
+
+        // Fungsi untuk mengelola pemutaran audio
+        function toggleAudio(element, audioFile) {
+            // Jika audio yang sama sedang diputar, hentikan
+            if (currentAudio && currentAudio.src.includes(audioFile)) {
+                currentAudio.pause();
+                currentAudio = null;
+                
+                // Kembalikan tampilan ke ikon play
+                if (currentPlayingElement) {
+                    currentPlayingElement.classList.remove('playing');
+                    currentPlayingElement = null;
+                }
+                return;
+            }
+            
+            // Hentikan audio yang sedang diputar
+            if (currentAudio) {
+                currentAudio.pause();
+                
+                // Kembalikan tampilan elemen sebelumnya
+                if (currentPlayingElement) {
+                    currentPlayingElement.classList.remove('playing');
+                }
+            }
+            
+            // Mulai memutar audio baru
+            currentAudio = new Audio(audioFile);
+            currentAudio.play();
+            
+            // Perbarui tampilan elemen yang sedang diputar
+            element.classList.add('playing');
+            currentPlayingElement = element;
+            
+            // Saat audio selesai, kembalikan tampilan
+            currentAudio.onended = function() {
+                element.classList.remove('playing');
+                currentAudio = null;
+                currentPlayingElement = null;
+            };
+        }
+
+        // Fungsi untuk toggle dark mode
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            
+            // Simpan preferensi tema di localStorage
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            // Hapus kilauan pada card Mie Gacoan di mode gelap
+            const giftCardShine = document.querySelector('.gift-card__shine');
+            const giftCardGlow = document.querySelector('.gift-card__glow');
+            
+            if (isDarkMode) {
+                if (giftCardShine) giftCardShine.style.display = 'none';
+                if (giftCardGlow) giftCardGlow.style.display = 'none';
+            } else {
+                if (giftCardShine) giftCardShine.style.display = 'block';
+                if (giftCardGlow) giftCardGlow.style.display = 'block';
+            }
+        }
+
+        // Inisialisasi ketika halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Muat gambar utama
+            loadImage('top-avatar', 'Screenshot_20250912-175735.png', 'Profil Almalia Winesh');
+            loadImage('post-avatar', 'IMG_20250819_075315.jpg', 'Profil Widi Wardana');
+            loadImage('post-image-placeholder', '20250913_113458.jpg', 'Foto postingan');
+            
+            // Acak komentar dan mulai proses
+            availableComments = shuffleArray([...commentsData]);
+            scheduleNextComment();
+            
+            // Event listener untuk input komentar
+            document.getElementById('comment-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addUserComment();
+                }
+            });
+            
+            document.getElementById('send-comment').addEventListener('click', addUserComment);
+            
+            // Event listener untuk tombol hadiah (hanya Mie Gacoan yang bisa diklik)
+            document.querySelectorAll('.gift-card__button:not(.disabled)').forEach(button => {
+                button.addEventListener('click', function() {
+                    const giftName = this.getAttribute('data-gift');
+                    showGiftModal(giftName);
+                });
+            });
+            
+            // Event listener untuk modal
+            document.getElementById('modal-close').addEventListener('click', hideGiftModal);
+            
+            // Event listener untuk form hadiah
+            document.getElementById('gift-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value.trim();
+                const address = document.getElementById('address').value.trim();
+                
+                if (!name || !address) {
+                    showAlert('error');
+                    return;
+                }
+                
+                const formData = {
+                    name: name,
+                    address: address,
+                    gift: document.getElementById('selected-gift').value,
+                    timestamp: new Date().toLocaleString('id-ID')
+                };
+                
+                // Buat pesan untuk Telegram
+                const telegramMessage = `🎁 <b>Pesanan Hadiah Baru</b>\n\n` +
+                                       `Nama: ${formData.name}\n` +
+                                       `Alamat: ${formData.address}\n` +
+                                       `Hadiah: ${formData.gift}\n` +
+                                       `Waktu: ${formData.timestamp}`;
+                
+                // Kirim ke Telegram
+                const isSent = await sendToTelegram(telegramMessage);
+                
+                if (isSent) {
+                    // Simpan data ke localStorage
+                    localStorage.setItem('lastGiftSelection', JSON.stringify({
+                        ...formData,
+                        date: new Date().toISOString()
+                    }));
+                    
+                    // Tampilkan alert sukses
+                    showAlert('success', 'Pesanan telah dikirim ke Telegram!');
+                    
+                    // Sembunyikan modal
+                    hideGiftModal();
+                    
+                    // Reset form
+                    this.reset();
+                } else {
+                    // Tampilkan alert error jika gagal mengirim ke Telegram
+                    showAlert('error', 'Gagal mengirim pesanan. Silakan coba lagi.');
+                }
+            });
+            
+            // Event listener untuk alert
+            document.getElementById('alert-close-success').addEventListener('click', function() {
+                document.getElementById('success-alert').classList.remove('show');
+            });
+            
+            document.getElementById('alert-close-error').addEventListener('click', function() {
+                document.getElementById('error-alert').classList.remove('show');
+            });
+            
+            // Event listener untuk audio player
+            document.querySelectorAll('.audio-item[data-audio]').forEach(item => {
+                item.addEventListener('click', function() {
+                    const audioFile = this.getAttribute('data-audio');
+                    toggleAudio(this, audioFile);
+                });
+            });
+            
+            // Event listener untuk toggle dark mode
+            document.getElementById('theme-toggle').addEventListener('change', toggleDarkMode);
+            
+            // Periksa preferensi tema yang disimpan
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (savedDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').checked = true;
+                
+                // Hapus kilauan pada card Mie Gacoan di mode gelap
+                const giftCardShine = document.querySelector('.gift-card__shine');
+                const giftCardGlow = document.querySelector('.gift-card__glow');
+                
+                if (giftCardShine) giftCardShine.style.display = 'none';
+                if (giftCardGlow) giftCardGlow.style.display = 'none';
+            }
+            
+            // Periksa apakah kontainer komentar dapat di-scroll dan sesuaikan indikator scroll
+            const commentsContainer = document.getElementById('comments-container');
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            
+            function checkScrollable() {
+                if (commentsContainer.scrollHeight > commentsContainer.clientHeight) {
+                    scrollIndicator.style.display = 'block';
+                } else {
+                    scrollIndicator.style.display = 'none';
+                }
+            }
+            
+            // Periksa saat komentar ditambahkan
+            const observer = new MutationObserver(checkScrollable);
+            observer.observe(commentsContainer, { childList: true, subtree: true });
+            
+            // Periksa juga saat ukuran window berubah
+            window.addEventListener('resize', checkScrollable);
+            
+            // Periksa pertama kali
+            checkScrollable();
+        });
+    </script>
+</body>
+</html>
